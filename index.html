@@ -1,49 +1,1005 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Diacure</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="./style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DiaCure - Prediction of Diabetics through Retinal Images</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #2ecc71;
+      --dark-color: #121212;
+      --light-color: #f4f4f4;
+      --danger-color: #e74c3c;
+      --text-color: #f8f9fa;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background: var(--dark-color);
+      font-size: 18px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: var(--transition);
+    }
+    
+    header.sticky {
+      background-color: rgba(18, 18, 18, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .logo span {
+      color: var(--secondary-color);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: var(--transition);
+      position: relative;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition);
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hamburger {
+      display: none;
+      cursor: pointer;
+    }
+    
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-color);
+      margin: 5px;
+      transition: var(--transition);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://wallpapers.com/images/featured/dark-sky-r6up6saosci2pwnu.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1rem;
+    }
+    
+    .hero-content {
+      max-width: 1000px;
+    }
+    
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      animation: fadeInDown 1s ease;
+    }
+    
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      animation: fadeInUp 1s ease;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary-color);
+      color: var(--light-color);
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      animation: fadeIn 1.5s ease;
+    }
+    
+    .btn:hover {
+      background: rgba(52, 152, 219, 0.8);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      margin-left: 1rem;
+    }
+    
+    .btn-secondary:hover {
+      background: var(--primary-color);
+    }
+
+    /* Sections */
+    section {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+    }
+    
+    .section-title p {
+      max-width: 700px;
+      margin: 0 auto;
+      color: #aaa;
+    }
+
+    /* Problem Section */
+    .problem {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text-color);
+    }
+
+    .problem-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .problem-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: var(--transition);
+    }
+    
+    .problem-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .problem-card i {
+      font-size: 3rem;
+      color: var(--danger-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .problem-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Solution Section */
+    .solution {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    .solution-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .step {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-color);
+      color: white;
+      width: 80px;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .step-content {
+      padding: 2rem;
+    }
+    
+    .step-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Team Section */
+    .team {
+      background: var(--dark-color);
+    }
+    
+    .team-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    
+    .team-member {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: center;
+      transition: var(--transition);
+    }
+    
+    .team-member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .member-img {
+      height: 250px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .member-img i {
+      font-size: 5rem;
+      color: #555;
+    }
+    
+    .member-info {
+      padding: 1.5rem;
+    }
+    
+    .member-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .member-info p {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* Future Section */
+    .future {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1581090700227-1e37b190418e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    .future-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .future-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: var(--transition);
+    }
+    
+    .future-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .future-card i {
+      font-size: 3rem;
+      color: var(--secondary-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .future-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      overflow: auto;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-content {
+      position: relative;
+      background: rgba(30, 30, 30, 0.95);
+      margin: 10% auto;
+      padding: 2.5rem;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 15px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: slideDown 0.4s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .close-modal:hover {
+      color: var(--primary-color);
+    }
+    
+    .modal-content h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: var(--text-color);
+    }
+    
+    .demo-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .demo-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-color);
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .demo-option:hover {
+      transform: translateY(-10px);
+      background: rgba(52, 152, 219, 0.2);
+      border-color: var(--primary-color);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .demo-option i {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .demo-option h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .demo-option p {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0a0a0a;
+      color: var(--text-color);
+      padding: 3rem 0 2rem;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-column h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .footer-column h3::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--primary-color);
+    }
+    
+    .footer-column ul {
+      list-style: none;
+    }
+    
+    .footer-column ul li {
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-column ul li a {
+      color: #aaa;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    
+    .footer-column ul li a:hover {
+      color: var(--primary-color);
+      padding-left: 5px;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid #222;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: rgba(18, 18, 18, 0.98);
+        clip-path: circle(0px at top right);
+        transition: all 0.5s ease-out;
+        pointer-events: none;
+        z-index: 999;
+      }
+      
+      .nav-links.active {
+        clip-path: circle(1500px at top right);
+        pointer-events: all;
+      }
+      
+      .hamburger {
+        display: block;
+        z-index: 1000;
+      }
+      
+      .hamburger.active div:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      
+      .hamburger.active div:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .hamburger.active div:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+      
+      .step {
+        flex-direction: column;
+      }
+      
+      .step-number {
+        width: 100%;
+        padding: 1rem 0;
+      }
+    }
+  </style>
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<header id="myHeader" class="">
-	
-  <path fill="#fff" fill-rule="evenodd" d="M502.8 0h211.8l-23 39.7-138.5 240L483 401H342.7L413 279.6 251.4 0h140.3L483 158.1 538.6 62 502.8 0Zm-201 279.6L140.1 0H0l231.7 401 70-121.4Z"/>
-</svg>
-	<nav>
-		<a href="#vision">Home</a>
-		<a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-1/">Diabetic Retinopathy Classifier</a>
-		<a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-2/">Diabetic Retinopathy Severity Classifier</a>
-		<a href="#future">Docs</a>
-		<button id="openmenu">
-			<span></span>
-			<span></span>
-		</button>
-	</nav>
-</header>
-<div id="page" class="">
-    <section id="vision" style="background-image:url(https://wallpapers.com/images/featured/dark-sky-r6up6saosci2pwnu.jpg)">
-        <h2 style="text-align: center; font-size: 60px; color: #fff;">DiaCure - Prediction of Diabetics through Retinal Images using Optimized Neural Network</h2>
+  <header id="header">
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">Dia<span>Cure</span></a>
+        <div class="nav-links" id="navLinks">
+          <a href="#hero">Home</a>
+          <a href="#problem">Problem</a>
+          <a href="#solution">Solution</a>
+          <a href="#team">Team</a>
+          <a href="#future">Future</a>
+          <a href="#" id="tryDemoBtn">Try Demo</a>
+        </div>
+        <div class="hamburger" id="hamburger">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Demo Modal -->
+  <div id="demoModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Choose a Model</h2>
+      <div class="demo-options">
+        <a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-1/" target="_blank" class="demo-option">
+          <i class="fas fa-eye"></i>
+          <h3>Diabetic Retinopathy Classifier</h3>
+          <p>Detect the presence of diabetic retinopathy in retinal images</p>
+        </a>
+        <a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-2/" target="_blank" class="demo-option">
+          <i class="fas fa-chart-line"></i>
+          <h3>Diabetic Retinopathy Severity Classifier</h3>
+          <p>Determine the severity level of detected diabetic retinopathy</p>
+        </a>
+      </div>
+    </div>
+  </div>
 
-    </section>
-</div>
+  <section id="hero" class="hero">
+    <div class="hero-content">
+      <h1>DiaCure - Prediction of Diabetics through Retinal Images</h1>
+      <p>Early detection of Diabetic retinopathy using advanced neural networks predicts diabetes, allowing timely intervention.</p>
+      <div class="cta">
+        <a href="#" class="btn" id="heroTryDemoBtn">Try Demo</a>
+        <a href="#problem" class="btn btn-secondary">Learn More</a>
+      </div>
+    </div>
+  </section>
 
-	<section id="knowledge" style="background-image:url(https://assets.codepen.io/214624/vision.jpg)">
-		<h1>Problem</h1>
-		
-	</section>
-	<section id="space" style="background-image:url(https://assets.codepen.io/214624/space.jpg)">
-		<h1>Solution</h1>
-	</section>
-	<section id="future" style="background-image:url(https://assets.codepen.io/214624/future.jpg)">
-		<h1>Future Scope .</h1>
-	</section>
-</div>
+  <section id="problem" class="problem">
+    <div class="container">
+      <div class="section-title">
+        <h2>The Problem</h2>
+        <p>Understanding Diabetic Retinopathy and its impact on vision</p>
+      </div>
+      <div class="problem-container">
+        <div class="problem-card">
+          <i class="fas fa-eye-slash"></i>
+          <h3>Diabetic Retinopathy</h3>
+          <p>Diabetic retinopathy is an eye condition that can cause vision loss and blindness in people who have diabetes. It affects blood vessels in the retina (the light-sensitive layer of tissue in the back of your eye).</p>
+        </div>
+        <div class="problem-card">
+          <i class="fas fa-tint"></i>
+          <h3>Symptoms</h3>
+          <p>Blood vessels in the retina start to bleed into the vitreous (gel-like fluid that fills your eye) and dark, floating spots or streaks that look like cobwebs can be seen.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Complications</h3>
+          <p>Diabetic retinopathy can lead to other serious eye conditions such as Diabetic macular edema (DME) and Neovascular glaucoma which can cause vision loss and blindness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <script  src="./script.js"></script>
+  <section id="solution" class="solution">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Solution</h2>
+        <p>How we're solving the problem with advanced technology</p>
+      </div>
+      <div class="solution-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Data Collection and Diversity</h3>
+            <p>Gathering a diverse dataset of retinal images, encompassing both diabetic and non-diabetic cases, ensuring comprehensive representation for accurate model training.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Neural Network Architecture</h3>
+            <p>Designing an efficient neural network architecture specifically tailored for image classification tasks, optimized for retinal image analysis.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Optimization Techniques</h3>
+            <p>Using nature-inspired algorithms to optimize the performance of the neural network, enhancing accuracy and efficiency in diabetic retinopathy detection.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Training Procedure</h3>
+            <p>Training the model with the ResNet18 architecture to achieve maximum accuracy and minimum loss through rigorous validation processes.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Performance Evaluation</h3>
+            <p>Evaluating the model's performance using appropriate metrics such as accuracy, precision, recall, and F1 score to ensure reliable results.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section id="team" class="team">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Team</h2>
+        <p>Meet the talented individuals behind DiaCure</p>
+      </div>
+      <div class="team-container">
+        <div class="team-member">
+          <div class="member-img">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-info">
+            <h3>Abhishek V K</h3>
+            <p>Team Member</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-img">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-info">
+            <h3>Suhas S</h3>
+            <p>Team Member</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-img">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-info">
+            <h3>Sai Kruthik Reddy N S</h3>
+            <p>Team Member</p>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="member-img">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="member-info">
+            <h3>Sanchit Vijay</h3>
+            <p>Team Member</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="future" class="future">
+    <div class="container">
+      <div class="section-title">
+        <h2>Future Scope</h2>
+        <p>Expanding the capabilities of DiaCure</p>
+      </div>
+      <div class="future-container">
+        <div class="future-card">
+          <i class="fas fa-mobile-alt"></i>
+          <h3>Mobile Application</h3>
+          <p>Developing a user-friendly mobile application for easier access and real-time diabetic retinopathy detection.</p>
+        </div>
+        <div class="future-card">
+          <i class="fas fa-hospital"></i>
+          <h3>Clinical Integration</h3>
+          <p>Integrating the system with hospital management systems for seamless diagnosis and patient tracking.</p>
+        </div>
+        <div class="future-card">
+          <i class="fas fa-brain"></i>
+          <h3>Advanced AI Models</h3>
+          <p>Implementing more sophisticated AI models for higher accuracy and detection of additional eye conditions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>DiaCure</h3>
+          <p>Prediction of Diabetics through Retinal Images using Optimized Neural Network.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#problem">Problem</a></li>
+            <li><a href="#solution">Solution</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#future">Future</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-1/" target="_blank">Diabetic Retinopathy Classifier</a></li>
+            <li><a href="https://huggingface.co/spaces/suhas1324/Diacure-stage-2/" target="_blank">Severity Classifier</a></li>
+            <li><a href="#" target="_blank">Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 DiaCure. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Header scroll effect
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+          header.classList.add('sticky');
+        } else {
+          header.classList.remove('sticky');
+        }
+      });
+      
+      // Mobile menu toggle
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      
+      hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        hamburger.classList.toggle('active');
+      });
+      
+      // Close mobile menu when clicking a link
+      const links = document.querySelectorAll('.nav-links a');
+      links.forEach(link => {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('active');
+          hamburger.classList.remove('active');
+        });
+      });
+      
+      // Modal functionality
+      const modal = document.getElementById('demoModal');
+      const tryDemoBtn = document.getElementById('tryDemoBtn');
+      const heroTryDemoBtn = document.getElementById('heroTryDemoBtn');
+      const closeModal = document.querySelector('.close-modal');
+      
+      // Open modal function
+      function openModal() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+      }
+      
+      // Close modal function
+      function closeModalFunc() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling when modal is closed
+      }
+      
+      // Event listeners for modal
+      tryDemoBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+      });
+      
+      heroTryDemoBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openModal();
+      });
+      
+      closeModal.addEventListener('click', closeModalFunc);
+      
+      // Close modal when clicking outside of the modal content
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          closeModalFunc();
+        }
+      });
+      
+      // Close modal with ESC key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && modal.style.display === 'block') {
+          closeModalFunc();
+        }
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          if (this.getAttribute('href') === '#') return;
+          
+          if (!this.id.includes('TryDemoBtn')) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 100,
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
+      });
+      
+      // Animation on scroll
+      const animateOnScroll = function() {
+        const elements = document.querySelectorAll('.problem-card, .step, .team-member, .future-card');
+        
+        elements.forEach(element => {
+          const elementPosition = element.getBoundingClientRect().top;
+          const screenPosition = window.innerHeight / 1.3;
+          
+          if (elementPosition < screenPosition) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+          }
+        });
+      };
+      
+      // Set initial state for animation
+      const elementsToAnimate = document.querySelectorAll('.problem-card, .step, .team-member, .future-card');
+      elementsToAnimate.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      });
+      
+      // Run animation on load and scroll
+      window.addEventListener('load', animateOnScroll);
+      window.addEventListener('scroll', animateOnScroll);
+    });
+  </script>
 </body>
 </html>
