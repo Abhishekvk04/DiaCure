@@ -113,13 +113,13 @@ Early detection is key to effective treatment.
 ## 📷 Sample Output(with confidence score)
 
 ### ✅ No Diabetic Retinopathy
-![No DR](./images/no_diabetic_retinopathy.png)
+![No DR](./Images/Non_diabetic.png)
 
 ### 🚨 Diabetic Retinopathy Detected
-![DR Detected](./images/diabetic_retinopathy_detected.png)
+![DR Detected](./Images/diabetic.png)
 
 ### 🚨 Diabetic Retinopathy Detected with severity
-![DR Detected](./images/diabetic_retinopathy_detected.png)
+![DR Detected](./Images/severity.png)
 ---
 
 ## 📬 Contact
