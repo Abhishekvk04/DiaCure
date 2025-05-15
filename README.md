@@ -90,7 +90,8 @@ Early detection is key to effective treatment.
 - 🎯 High accuracy in detecting diabetic retinopathy
 - 🧠 Model provides confidence score for predictions
 - ⚡ Performs efficiently in real-time conditions
-
+- 📊 View our Kaggle notebook: [Model1](https://www.kaggle.com/code/suhas1901/diabetic-retinopathy-classifier/notebook?scriptVersionId=169840212) [Model2](https://www.kaggle.com/code/suhas1901/diabetic-retinopathy-severity-classifier)
+  
 ---
 
 ## 👥 Team
